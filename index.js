@@ -133,11 +133,10 @@ server.on("upgrade", (req, socket, head) => {
 });
 
 server.on("listening", () => {
-  // Changed console log to reflect that it is live for the web
   console.log(chalk.green(`🌍 Server is live and listening on port ${PORT}`));
 });
 
-// FIXED: Listen on '0.0.0.0' so Railway can route external traffic to your proxy
+// FIXED: Removed the ambiguous listen and set it explicitly for Railway
 server.listen({ 
   port: PORT, 
   host: '0.0.0.0' 

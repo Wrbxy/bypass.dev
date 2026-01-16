@@ -24,7 +24,6 @@ const CACHE_TTL = 30 * 24 * 60 * 60 * 1000; // Cache for 30 Days
 
 if (config.challenge !== false) {
   console.log(chalk.green("🔒 Password protection is enabled! Listing logins below"));
-  // biome-ignore lint: idk
   Object.entries(config.users).forEach(([username, password]) => {
     console.log(chalk.blue(`Username: ${username}, Password: ${password}`));
   });
@@ -102,7 +101,6 @@ const routes = [
   { path: "/", file: "index.html" },
 ];
 
-// biome-ignore lint: idk
 routes.forEach(route => {
   app.get(route.path, (_req, res) => {
     res.sendFile(path.join(__dirname, "static", route.file));
@@ -135,7 +133,12 @@ server.on("upgrade", (req, socket, head) => {
 });
 
 server.on("listening", () => {
-  console.log(chalk.green(`🌍 Server is running on http://localhost:${PORT}`));
+  // Changed console log to reflect that it is live for the web
+  console.log(chalk.green(`🌍 Server is live and listening on port ${PORT}`));
 });
 
-server.listen({ port: PORT });
+// FIXED: Listen on '0.0.0.0' so Railway can route external traffic to your proxy
+server.listen({ 
+  port: PORT, 
+  host: '0.0.0.0' 
+});
